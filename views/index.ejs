@@ -1,39 +1,84 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Weather App</title>
     <link rel="stylesheet" type="text/css" href="/style.css" />
     <link
       rel="stylesheet"
-      href="https://use.fontawesome.com/releases/v5.14.0/css/all.css"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
   </head>
   <body>
     <div class="container">
       <h1>Weather App</h1>
-      <form action="/weather" method="get">
-        <input type="text" name="city" placeholder="Enter city name" required />
-        <button type="submit">Get Weather</button>
+      
+      <form action="/weather" method="get" class="search-form">
+        <input 
+          type="text" 
+          name="city" 
+          placeholder="Search for a city..." 
+          required 
+          autocomplete="off"
+        />
+        <button type="submit">
+          <i class="fas fa-search"></i>
+        </button>
       </form>
-      ` <% if (error) { %>
-      <p class="error"><%= error %></p>
-      <% } else if (weather) { %>
-      <div class="card">
-        <!-- add your weather data here -->
-        <p>
-          <i class="fas fa-thermometer-half"></i>
-          <%=weather.main.temp%>&deg;F
-        </p>
-        <p>
-          <i class="fas fa-cloud"></i>
-          <%=weather.weather[0].main%>
-        </p>
 
-        <p>
-          <i class="fas fa-map-marker-alt"></i>
-          <%=weather.name%>, <%=weather.sys.country%>
-        </p>
-      </div>
+      <% if (error) { %>
+        <div class="error">
+          <i class="fas fa-exclamation-circle"></i>
+          <p><%= error %></p>
+        </div>
+      <% } else if (weather) { %>
+        <div class="card">
+          <div class="weather-icon">
+            <% 
+              const iconCode = weather.weather[0].icon;
+              const isNight = iconCode.endsWith('n');
+              let iconClass = 'fa-sun';
+              
+              if (iconCode.includes('01')) iconClass = isNight ? 'fa-moon' : 'fa-sun';
+              else if (iconCode.includes('02')) iconClass = isNight ? 'fa-cloud-moon' : 'fa-cloud-sun';
+              else if (iconCode.includes('03') || iconCode.includes('04')) iconClass = 'fa-cloud';
+              else if (iconCode.includes('09') || iconCode.includes('10')) iconClass = 'fa-cloud-showers-heavy';
+              else if (iconCode.includes('11')) iconClass = 'fa-bolt';
+              else if (iconCode.includes('13')) iconClass = 'fa-snowflake';
+              else if (iconCode.includes('50')) iconClass = 'fa-smog';
+            %>
+            <i class="fas <%= iconClass %>"></i>
+          </div>
+          
+          <div class="temp"><%= Math.round(weather.main.temp) %>&deg;</div>
+          <div class="desc"><%= weather.weather[0].description %></div>
+          
+          <div class="location">
+            <i class="fas fa-location-dot"></i>
+            <span><%= weather.name %>, <%= weather.sys.country %></span>
+          </div>
+
+          <div class="details-grid">
+            <div class="detail-item">
+              <i class="fas fa-droplet"></i>
+              <span class="detail-label">Humidity</span>
+              <span class="detail-value"><%= weather.main.humidity %>%</span>
+            </div>
+            <div class="detail-item">
+              <i class="fas fa-wind"></i>
+              <span class="detail-label">Wind Speed</span>
+              <span class="detail-value"><%= Math.round(weather.wind.speed) %> mph</span>
+            </div>
+          </div>
+        </div>
+      <% } else { %>
+        <div class="card welcome-card">
+          <div class="weather-icon">
+            <i class="fas fa-cloud-sun-rain"></i>
+          </div>
+          <div class="desc">Enter a city name to get real-time weather updates.</div>
+        </div>
       <% } %>
     </div>
   </body>
