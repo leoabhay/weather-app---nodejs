@@ -23,7 +23,7 @@ app.get("/weather", async (req, res) => {
   const apiKey = process.env.WEATHER_API_KEY;
 
   // Add your logic here to fetch weather data from the API
-  const APIUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=imperial&appid=${apiKey}`;
+  const APIUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apiKey}`;
   let weather;
   let error = null;
   try {

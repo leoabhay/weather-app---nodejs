@@ -51,7 +51,7 @@
             <i class="fas <%= iconClass %>"></i>
           </div>
           
-          <div class="temp"><%= Math.round(weather.main.temp) %>&deg;</div>
+          <div class="temp"><%= Math.round(weather.main.temp) %>&deg;C</div>
           <div class="desc"><%= weather.weather[0].description %></div>
           
           <div class="location">
@@ -68,7 +68,7 @@
             <div class="detail-item">
               <i class="fas fa-wind"></i>
               <span class="detail-label">Wind Speed</span>
-              <span class="detail-value"><%= Math.round(weather.wind.speed) %> mph</span>
+               <span class="detail-value"><%= Math.round(weather.wind.speed) %> m/s</span>
             </div>
           </div>
         </div>
